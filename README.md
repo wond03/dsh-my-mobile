@@ -17,8 +17,8 @@
 ## Android App
 - 源码：`apps/mobile/android`
 - 最新安装包：[Releases](https://github.com/wond03/dsh-my-mobile/releases)
-- 当前版本：1.0.1-my（versionCode 84，debug 签名，包名 `io.github.sayach.dshmobile.debug`）
-- 本次更新：新鲸鱼应用图标、Android 自适应图标、深浅色配对/设备列表背景
+- 当前版本：1.0.2-my（versionCode 85，debug 签名，包名 `io.github.sayach.dshmobile.debug`）
+- 本次更新：切回前台自动重连；新鲸鱼应用图标、Android 自适应图标、深浅色配对/设备列表背景
 
 ## 许可
 Apache-2.0（继承上游）

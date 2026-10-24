@@ -148,6 +148,7 @@ class MainActivity : Activity() {
         )
     }
     private var pendingConnection: ConnectionAttemptController.Attempt? = null
+    private var pausedAt = 0L
     private var connectionCancellationAction: ((ConnectionAttemptController.Reason) -> Unit)? = null
     private var connectionWaitingView: FrameLayout? = null
     private var connectionCancelButton: Button? = null
@@ -332,6 +333,19 @@ class MainActivity : Activity() {
         sameHostMonitor.start()
         nativeBridge?.onHostResumed()
         webView?.onResume()
+        val backgroundedAt = pausedAt
+        pausedAt = 0L
+        if (backgroundedAt != 0L && SystemClock.elapsedRealtime() - backgroundedAt > 1_200L) {
+            // The WebView pauses JS in onPause, so the DSH client cannot notice a
+            // dead WebSocket while the app is in the background. Nudge it once on
+            // resume instead of waiting for the socket failure or backoff timer.
+            val browser = webView
+            browser?.postDelayed({
+                runCatching {
+                    browser.evaluateJavascript(RESUME_RECONNECT_SCRIPT, null)
+                }
+            }, 150L)
+        }
         window.decorView.requestApplyInsets()
         if (deviceListVisible && showingSetup) refreshDeviceStatuses(pairedDeviceStore.load())
     }
@@ -353,6 +367,7 @@ class MainActivity : Activity() {
         pauseDeviceListRefresh()
         cancelPendingWebBack()
         nativeBridge?.updateKeyboardState(NativeKeyboardState(false, false))
+        pausedAt = SystemClock.elapsedRealtime()
         webView?.onPause()
         CookieManager.getInstance().flush()
         super.onPause()
@@ -3886,6 +3901,8 @@ class MainActivity : Activity() {
 
     private companion object {
         const val PREFERENCES_NAME = "dsh_mobile"
+        /** Ask the mobile client plugin to reconnect immediately; fall back to a network-state nudge. */
+        const val RESUME_RECONNECT_SCRIPT = """(function(){try{if(window.__dshMobileReconnect){window.__dshMobileReconnect()}else{window.dispatchEvent(new Event('offline'));window.dispatchEvent(new Event('online'));}}catch(e){}})()"""
         const val PREFERENCE_LAN_ORIGIN = "gateway_origin"
         const val PREFERENCE_REMOTE_ORIGIN = "remote_gateway_origin"
         const val PREFERENCE_LAST_ACCESS_MODE = "last_access_mode"
