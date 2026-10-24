@@ -15,6 +15,9 @@
 ## 版本
 0.6.16-community.2（基于上游 v0.6.16），Android App 1.0.2（versionCode 86）。
 
+- 插件包 SHA-256：`6c29e58cf78ad4b7afd102842c901f81804d26aea920833e19690c9fb5466b26`
+- App APK SHA-256：`09cb76e497485d508eadf6ae7e89280941be55e12e6cb597866fbeb73ae4fa7d`
+
 ## 插件安装
 从 [Releases](https://github.com/wond03/dsh-my-mobile/releases/tag/community-v1.0.2-r2) 下载 `dsh-my-mobile-0.6.16-community.2.tgz`，然后安装到你的 DSH profile：
 ```bash
@@ -29,6 +32,12 @@ dsh plugin --profile web add /path/to/dsh-my-mobile-0.6.16-community.2.tgz
 Environment=DSH_MOBILE_PUBLIC_HOST=your.domain.example
 ```
 不设置时只使用局域网 IP；也可以用 cpolar/cloudflared/FRP/自有反向代理等远程方式。
+
+如果公网 3443 端口由 nginx 等反向代理占用，让插件只监听回环即可（代理转发到 `127.0.0.1:3443`）：
+```ini
+Environment=DSH_MOBILE_LISTEN_HOST=127.0.0.1
+```
+管理接口在公网 DSH 域名下同样可用，但每个请求都要求有效的 DSH 登录会话。
 
 ## Android App
 - 源码：`apps/mobile/android`
