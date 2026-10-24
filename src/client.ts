@@ -4529,9 +4529,10 @@ export function apply(ctx: ClientContext): void {
     style.dataset.plugin = "dsh-my-mobile";
     style.textContent = `
 @media (max-width: 720px) {
+  .dsh-mobile-control { z-index: 2147483000 !important; }
   .dsh-mobile-control__advanced-toggle { display: none; }
   #dsh-mobile-control-panel { position: fixed !important; inset: 0 !important; width: 100% !important; max-width: 100% !important; height: 100% !important; max-height: 100% !important; border-radius: 0 !important; padding: 12px 14px calc(20px + env(safe-area-inset-bottom)) !important; z-index: 2147483000 !important; overflow-y: auto !important; box-shadow: none !important; }
-  #dsh-mobile-control-panel[hidden] { display: none !important; }
+  #dsh-mobile-control-panel[hidden], .dsh-mobile-control__panel [hidden] { display: none !important; }
   .dsh-mobile-control__header { position: sticky !important; top: 0; z-index: 3; background: var(--dsw-alias-bg-layer-2, #fff); padding: 4px 0 8px; }
   .dsh-mobile-control__advanced-toggle { display: inline-flex !important; align-items: center; justify-content: center; min-height: 44px; padding: 0 10px; border: 0; border-radius: 10px; background: transparent; color: var(--dsw-alias-label-primary-bluish, #2563eb); font: 650 12px/1 system-ui; cursor: pointer; }
   .dsh-mobile-control__view, .dsh-mobile-control__remote-workspace { display: flex !important; flex-direction: column; gap: 12px; }
@@ -4548,9 +4549,10 @@ export function apply(ctx: ClientContext): void {
   .dsh-mobile-control__remote-workspace > .dsh-mobile-control__stage-header { order: 7; }
   .dsh-mobile-control__remote-workspace > .dsh-mobile-control__provider-setup-body { order: 8; }
   .dsh-mobile-control__remote-workspace > .dsh-mobile-control__guide { order: 9; }
-  .dsh-mobile-control__actions { display: grid !important; grid-template-columns: 1fr 1fr; gap: 8px !important; }
-  .dsh-mobile-control__actions .dsh-mobile-control__primary { grid-column: 1 / -1; }
-  .dsh-mobile-control__actions button { min-height: 44px; white-space: normal; line-height: 1.3; padding: 8px 10px; }
+  .dsh-mobile-control__actions { display: flex !important; flex-wrap: wrap !important; gap: 8px !important; }
+  .dsh-mobile-control__actions .dsh-mobile-control__primary { order: -1 !important; flex: 1 0 100% !important; }
+  .dsh-mobile-control__actions button:not(.dsh-mobile-control__primary) { flex: 1 1 calc(50% - 4px) !important; min-width: 0; }
+  .dsh-mobile-control__actions button { min-height: 44px; min-width: 0; white-space: normal; line-height: 1.3; padding: 8px 10px; }
   .dsh-mobile-control__access-link { white-space: normal !important; overflow-wrap: anywhere; }
   .dsh-mobile-control__panel:not(.is-advanced) .dsh-mobile-control__provider-section,
   .dsh-mobile-control__panel:not(.is-advanced) .dsh-mobile-control__provider-setup-body,
@@ -4558,7 +4560,9 @@ export function apply(ctx: ClientContext): void {
   .dsh-mobile-control__panel:not(.is-advanced) .dsh-mobile-control__details,
   .dsh-mobile-control__panel:not(.is-advanced) .dsh-mobile-control__http-frame-warning,
   .dsh-mobile-control__panel:not(.is-advanced) .dsh-mobile-control__intro,
-  .dsh-mobile-control__panel:not(.is-advanced) .dsh-mobile-control__app-download { display: none !important; }
+  .dsh-mobile-control__panel:not(.is-advanced) .dsh-mobile-control__app-download,
+  .dsh-mobile-control__panel:not(.is-advanced) .dsh-mobile-control__extensions,
+  .dsh-mobile-control__panel:not(.is-advanced) .dsh-mobile-control__manage-row .dsh-mobile-control__manage:last-child { display: none !important; }
 }
 `;
     document.head.append(style);
