@@ -39,5 +39,8 @@ export DSH_ANDROID_KEY_PASSWORD=...
 ./gradlew :app:assembleRelease -PdshPairHost=your.domain.example
 ```
 
+## 插件源码
+完整插件 TypeScript 源码、构建脚本、测试和 Android 工程在 [`community-source` 分支](https://github.com/wond03/dsh-my-mobile/tree/community-source)。`main` 分支保留已构建的 `lib/` 与发布用 Android 源码。
+
 ## 许可
 Apache-2.0（继承上游）
