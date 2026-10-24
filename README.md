@@ -12,7 +12,21 @@
 - 公开分发请使用私有 keystore 签名的 release 构建，不要分发 debug 包。
 
 ## 版本
-0.6.15-my.1（基于上游 v0.6.15）
+0.6.16-community.1（基于上游 v0.6.16）
+
+## 插件安装
+从 [Releases](https://github.com/wond03/dsh-my-mobile/releases) 下载 `dsh-my-mobile-0.6.16-community.1.tgz`，然后安装到你的 DSH profile：
+```bash
+dsh plugin --profile web add /path/to/dsh-my-mobile-0.6.16-community.1.tgz
+```
+重启 DSH 后，进入「移动访问」即可看到面板。管理接口需要 DSH 登录会话。
+
+公网自定义域名（可选）：
+```bash
+# 在使用 managed 局域网网关时，为证书和配对地址增加该 DNS 名称
+Environment=DSH_MOBILE_PUBLIC_HOST=your.domain.example
+```
+不设置时只使用局域网 IP；也可以用 cpolar/cloudflared/FRP/自有反向代理等远程方式。
 
 ## Android App
 - 源码：`apps/mobile/android`
