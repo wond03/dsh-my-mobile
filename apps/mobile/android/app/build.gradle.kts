@@ -22,8 +22,8 @@ android {
         applicationId = "com.dshmobile.community"
         minSdk = 29
         targetSdk = 36
-        versionCode = 86
-        versionName = "1.0.2"
+        versionCode = 87
+        versionName = "1.0.3"
         manifestPlaceholders["dshPairHost"] = providers.gradleProperty("dshPairHost").orElse("pair.invalid").get()
     }
 

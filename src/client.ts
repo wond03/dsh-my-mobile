@@ -493,6 +493,8 @@ function MobileTaskNotificationRow(): unknown {
 const CONTROL_REQUEST_TIMEOUT_MS = 15_000
 const LONG_CONTROL_REQUEST_TIMEOUT_MS = 210_000
 const GITHUB_RELEASES_URL = 'https://github.com/wond03/dsh-my-mobile/releases'
+const ANDROID_APP_VERSION = '1.0.3'
+const ANDROID_APP_DOWNLOAD_URL = `${GITHUB_RELEASES_URL}/download/community-v${ANDROID_APP_VERSION}/dsh-community-${ANDROID_APP_VERSION}.apk`
 const CONTROL_PANEL_ID = 'dsh-mobile-control-panel'
 
 export interface ClientReleaseInfo {
@@ -919,7 +921,7 @@ function installControl(): { remove: () => void; toggle: () => void; isOpen: () 
   const close = element('button', 'dsh-mobile-control__close'); close.type = 'button'; close.textContent = '×'; close.setAttribute('aria-label', t('collapseMobileAccess'))
   headerActions.append(updatePlugin, diagnosticsEntry, close)
   const releaseNotice = element('p', 'dsh-mobile-control__release-notice'); releaseNotice.hidden = true; releaseNotice.setAttribute('role', 'status'); releaseNotice.setAttribute('aria-live', 'polite')
-  const appDownload = element('a', 'dsh-mobile-control__app-download'); appDownload.href = GITHUB_RELEASES_URL; appDownload.target = '_blank'; appDownload.rel = 'noopener noreferrer'; appDownload.textContent = t('downloadAndroid'); appDownload.setAttribute('aria-label', t('downloadAndroidAria'))
+  const appDownload = element('a', 'dsh-mobile-control__app-download'); appDownload.href = ANDROID_APP_DOWNLOAD_URL; appDownload.target = '_blank'; appDownload.rel = 'noopener noreferrer'; appDownload.textContent = t('downloadAndroidVersion', { version: ANDROID_APP_VERSION }); appDownload.setAttribute('aria-label', t('downloadAndroidVersionAria', { version: ANDROID_APP_VERSION }))
   const switcher = element('div', 'dsh-mobile-control__switcher')
   const lanTab = element('button', 'dsh-mobile-control__tab is-active'); lanTab.type = 'button'; lanTab.textContent = t('lan')
   const remoteTab = element('button', 'dsh-mobile-control__tab'); remoteTab.type = 'button'; remoteTab.textContent = t('remote')
