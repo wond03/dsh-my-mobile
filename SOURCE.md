@@ -23,6 +23,8 @@ Release signing needs a private keystore; see the main README.
 - Pairing links show the target origin and require confirmation.
 - The mobile control panel is full-screen with an advanced-settings toggle.
 - The app reconnects immediately when it returns to the foreground.
+- The simple panel keeps the App download entry visible and points it at this repository's APK, not the upstream release.
+- Release metadata and download URLs follow the community repository's `community-v*` tags.
 
 ## Attribution
 Forked from [saya-ch/dsh-mobile](https://github.com/saya-ch/dsh-mobile), Apache-2.0.

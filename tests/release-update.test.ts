@@ -15,7 +15,7 @@ import {
 
 const temporaryDirectories: string[] = []
 const bundledApp = JSON.parse(readFileSync(new URL('../apps/mobile/release.json', import.meta.url), 'utf8')) as { readonly version: string; readonly versionCode: number; readonly releaseTag: string }
-const bundledApkUrl = `https://github.com/saya-ch/dsh-mobile/releases/download/${bundledApp.releaseTag}/dsh-mobile-android-v${bundledApp.version}.apk`
+const bundledApkUrl = `https://github.com/wond03/dsh-my-mobile/releases/download/${bundledApp.releaseTag}/dsh-community-${bundledApp.version}.apk`
 
 afterEach(async () => {
   await Promise.all(temporaryDirectories.splice(0).map(directory => rm(directory, { recursive: true, force: true })))
@@ -37,7 +37,7 @@ function releaseFetch(version: string, appVersion = bundledApp.version, releaseT
         headers: { 'content-type': 'application/json' },
       })
     }
-    if (url === 'https://raw.githubusercontent.com/saya-ch/dsh-mobile/main/apps/mobile/release.json') {
+    if (url === 'https://raw.githubusercontent.com/wond03/dsh-my-mobile/main/apps/mobile/release.json') {
       return Response.json({ version: appVersion, versionCode: bundledApp.versionCode, releaseTag })
     }
     return new Response('', { status: 503 })
@@ -50,13 +50,13 @@ function notesFetch(version: string): typeof globalThis.fetch {
     if (url === 'https://registry.npmjs.org/dsh-mobile/latest') {
       return new Response(JSON.stringify({ version }), { status: 200, headers: { 'content-type': 'application/json' } })
     }
-    if (url === `https://api.github.com/repos/saya-ch/dsh-mobile/releases/tags/v${version}`) {
+    if (url === `https://api.github.com/repos/wond03/dsh-my-mobile/releases/tags/v${version}`) {
       return new Response(JSON.stringify({ body: '## 0.3.3 updates: fixes things. Restart DSH after installing.' }), {
         status: 200,
         headers: { 'content-type': 'application/json' },
       })
     }
-    if (url === 'https://raw.githubusercontent.com/saya-ch/dsh-mobile/main/apps/mobile/release.json') {
+    if (url === 'https://raw.githubusercontent.com/wond03/dsh-my-mobile/main/apps/mobile/release.json') {
       return Response.json({ version, versionCode: bundledApp.versionCode, releaseTag: `v${version}` })
     }
     return new Response('', { status: 503 })
@@ -121,7 +121,7 @@ describe('profile-local release updates', () => {
     expect(runUpdate).toHaveBeenCalledWith(directory, '0.3.3')
   })
 
-  it.each([`v${bundledApp.version}`, `android-v${bundledApp.version}`])('keeps the published App separate from a newer plugin for tag %s', async releaseTag => {
+  it.each([`v${bundledApp.version}`, `android-v${bundledApp.version}`, bundledApp.releaseTag])('keeps the published App separate from a newer plugin for tag %s', async releaseTag => {
     const [major, minor, patch] = bundledApp.version.split('.').map(Number)
     const newerPluginVersion = `${major}.${minor}.${patch! + 1}`
     const manager = new PluginReleaseManager({
@@ -129,10 +129,11 @@ describe('profile-local release updates', () => {
       installedVersion: bundledApp.version,
       fetch: releaseFetch(newerPluginVersion, bundledApp.version, releaseTag),
     })
+    const asset = releaseTag === `community-v${bundledApp.version}` ? `dsh-community-${bundledApp.version}.apk` : `dsh-mobile-android-v${bundledApp.version}.apk`
     await expect(manager.status()).resolves.toMatchObject({
       latestVersion: newerPluginVersion,
       androidVersion: bundledApp.version,
-      androidDownloadUrl: `https://github.com/saya-ch/dsh-mobile/releases/download/${releaseTag}/dsh-mobile-android-v${bundledApp.version}.apk`,
+      androidDownloadUrl: `https://github.com/wond03/dsh-my-mobile/releases/download/${releaseTag}/${asset}`,
     })
   })
 
@@ -145,8 +146,8 @@ describe('profile-local release updates', () => {
     const fetcher = notesFetch('0.6.2')
     const manager = new PluginReleaseManager({ profileDirectory: undefined, fetch: fetcher })
     await manager.status()
-    expect(fetcher).toHaveBeenCalledWith('https://api.github.com/repos/saya-ch/dsh-mobile/releases/tags/v0.6.2', expect.any(Object))
-    expect(fetcher).not.toHaveBeenCalledWith('https://api.github.com/repos/saya-ch/dsh-mobile/releases/latest', expect.any(Object))
+    expect(fetcher).toHaveBeenCalledWith('https://api.github.com/repos/wond03/dsh-my-mobile/releases/tags/v0.6.2', expect.any(Object))
+    expect(fetcher).not.toHaveBeenCalledWith('https://api.github.com/repos/wond03/dsh-my-mobile/releases/latest', expect.any(Object))
   })
 
   it.each([
@@ -177,7 +178,7 @@ describe('profile-local release updates', () => {
     const status = await manager.status()
     expect(status.androidVersion).toBe(bundledApp.version)
     expect(status.androidDownloadUrl).toBe(bundledApkUrl)
-    expect(fetcher).not.toHaveBeenCalledWith('https://api.github.com/repos/saya-ch/dsh-mobile/releases/latest', expect.any(Object))
+    expect(fetcher).not.toHaveBeenCalledWith('https://api.github.com/repos/wond03/dsh-my-mobile/releases/latest', expect.any(Object))
   })
 
   it('carries the latest release notes for the preview card and degrades when the API fails', async () => {

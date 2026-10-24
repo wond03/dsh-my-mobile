@@ -4560,7 +4560,6 @@ export function apply(ctx: ClientContext): void {
   .dsh-mobile-control__panel:not(.is-advanced) .dsh-mobile-control__details,
   .dsh-mobile-control__panel:not(.is-advanced) .dsh-mobile-control__http-frame-warning,
   .dsh-mobile-control__panel:not(.is-advanced) .dsh-mobile-control__intro,
-  .dsh-mobile-control__panel:not(.is-advanced) .dsh-mobile-control__app-download,
   .dsh-mobile-control__panel:not(.is-advanced) .dsh-mobile-control__extensions,
   .dsh-mobile-control__panel:not(.is-advanced) .dsh-mobile-control__manage-row .dsh-mobile-control__manage:last-child { display: none !important; }
 }

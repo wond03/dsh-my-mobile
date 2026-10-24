@@ -7,9 +7,9 @@ import { DSH_MOBILE_VERSION } from './version.js'
 
 const PACKAGE_NAME = 'dsh-mobile'
 const NPM_LATEST_URL = 'https://registry.npmjs.org/dsh-mobile/latest'
-const ANDROID_RELEASE_DESCRIPTOR_URL = 'https://raw.githubusercontent.com/saya-ch/dsh-mobile/main/apps/mobile/release.json'
-const GITHUB_RELEASE_API = 'https://api.github.com/repos/saya-ch/dsh-mobile/releases/tags/'
-const GITHUB_RELEASES_URL = 'https://github.com/saya-ch/dsh-mobile/releases'
+const ANDROID_RELEASE_DESCRIPTOR_URL = 'https://raw.githubusercontent.com/wond03/dsh-my-mobile/main/apps/mobile/release.json'
+const GITHUB_RELEASE_API = 'https://api.github.com/repos/wond03/dsh-my-mobile/releases/tags/'
+const GITHUB_RELEASES_URL = 'https://github.com/wond03/dsh-my-mobile/releases'
 const RELEASE_NOTES_MAX_CHARS = 4000
 const STATUS_CACHE_MS = 10 * 60_000
 const REQUEST_TIMEOUT_MS = 8_000
@@ -208,10 +208,13 @@ interface AndroidRelease {
 
 function androidRelease(version: unknown, tag: unknown): AndroidRelease | undefined {
   if (typeof version !== 'string' || !/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/u.test(version)
-    || parseSemver(version) === undefined || (tag !== `v${version}` && tag !== `android-v${version}`)) return undefined
+    || parseSemver(version) === undefined) return undefined
+  const community = tag === `community-v${version}`
+  if (!community && tag !== `v${version}` && tag !== `android-v${version}`) return undefined
+  const asset = community ? `dsh-community-${version}.apk` : `dsh-mobile-android-v${version}.apk`
   return Object.freeze({
     version,
-    downloadUrl: `https://github.com/saya-ch/dsh-mobile/releases/download/${tag}/dsh-mobile-android-v${version}.apk`,
+    downloadUrl: `${GITHUB_RELEASES_URL}/download/${tag}/${asset}`,
   })
 }
 
