@@ -3945,7 +3945,7 @@ class MainActivity : Activity() {
         const val PAGE_READY_POLL_MS = 250L
         const val LAN_CONNECTION_BUDGET_MS = 30_000L
         const val REMOTE_CONNECTION_BUDGET_MS = 60_000L
-        const val APP_RELEASES_URL = "https://github.com/saya-ch/dsh-mobile/releases/latest"
+        const val APP_RELEASES_URL = "https://github.com/wond03/dsh-my-mobile/releases/latest"
         val RECOVERY_DELAYS_MS = longArrayOf(0L, 1_000L, 3_000L, 8_000L)
         val MIME_TYPE = Regex("^[a-z0-9!#$&^_.+-]+/[a-z0-9!#$&^_.+*-]+$")
         val UNSAFE_FILENAME = Regex("[\\\\/:*?\"<>|\\p{Cc}]")
