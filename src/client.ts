@@ -492,7 +492,7 @@ function MobileTaskNotificationRow(): unknown {
 
 const CONTROL_REQUEST_TIMEOUT_MS = 15_000
 const LONG_CONTROL_REQUEST_TIMEOUT_MS = 210_000
-const GITHUB_RELEASES_URL = 'https://github.com/saya-ch/dsh-mobile/releases'
+const GITHUB_RELEASES_URL = 'https://github.com/wond03/dsh-my-mobile/releases'
 const CONTROL_PANEL_ID = 'dsh-mobile-control-panel'
 
 export interface ClientReleaseInfo {
@@ -517,7 +517,7 @@ export function clientReleaseInfo(data: Readonly<Record<string, unknown>>): Clie
   const androidVersion = releaseVersion(data.androidVersion)
   const expectedAndroidDownloadUrls = androidVersion === undefined
     ? []
-    : ['v', 'android-v'].map(prefix => `${GITHUB_RELEASES_URL}/download/${prefix}${androidVersion}/dsh-mobile-android-v${androidVersion}.apk`)
+    : ['community-v'].map(prefix => `${GITHUB_RELEASES_URL}/download/${prefix}${androidVersion}/dsh-community-${androidVersion}.apk`)
   const androidDownloadUrl = typeof data.androidDownloadUrl === 'string' && expectedAndroidDownloadUrls.includes(data.androidDownloadUrl)
     ? data.androidDownloadUrl
     : GITHUB_RELEASES_URL
