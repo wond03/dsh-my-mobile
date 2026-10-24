@@ -1546,14 +1546,22 @@ class MainActivity : Activity() {
         card.addView(secondaryButton(R.string.back_to_connections, 48) { showConnectionCenter() }, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
     }
 
-    /** DSH custom: open a pairing URL shared from the browser and pair automatically. */
+    /** Open a pairing URL shared from another app, after confirming the target origin. */
     private fun handlePairingIntent(caughtIntent: Intent?) {
         val data = caughtIntent?.dataString?.trim().orEmpty()
         if (data.isEmpty() || caughtIntent?.action != Intent.ACTION_VIEW) return
         val connection = GatewayConnection.parse(data) ?: return
         if (GatewayUrlPolicy.pairingKey(data) == null) return
-        accessMode = AccessMode.REMOTE
-        showPairing(manualHarness(connection.origin), prefilledInput = data, autoConnect = true)
+        if (isFinishing || isDestroyed) return
+        AlertDialog.Builder(this)
+            .setTitle(R.string.pair_link_title)
+            .setMessage(getString(R.string.pair_link_message, connection.origin.serialized))
+            .setPositiveButton(R.string.connect) { _, _ ->
+                accessMode = AccessMode.REMOTE
+                showPairing(manualHarness(connection.origin), prefilledInput = data, autoConnect = true)
+            }
+            .setNegativeButton(R.string.cancel, null)
+            .show()
     }
 
     private fun connectRemoteLink(raw: String, status: TextView) {

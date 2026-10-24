@@ -19,11 +19,12 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "io.github.sayach.dshmobile"
+        applicationId = "com.dshmobile.community"
         minSdk = 29
         targetSdk = 36
-        versionCode = 85
-        versionName = "1.0.2-my"
+        versionCode = 86
+        versionName = "1.0.2"
+        manifestPlaceholders["dshPairHost"] = providers.gradleProperty("dshPairHost").orElse("pair.invalid").get()
     }
 
     signingConfigs {

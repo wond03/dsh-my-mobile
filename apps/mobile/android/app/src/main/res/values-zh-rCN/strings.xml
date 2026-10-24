@@ -207,4 +207,6 @@
     <string name="same_host_detect">自动检测并提示</string>
     <string name="same_host_switched">正在自动切换连接…</string>
     <string name="same_host_migration_retained">迁移未完成，已保留原页面。</string>
+    <string name="pair_link_title">连接这台 DSH？</string>
+    <string name="pair_link_message">这个链接要连接到：\n%1$s\n\n只有确认是你自己生成的链接才继续。</string>
 </resources>

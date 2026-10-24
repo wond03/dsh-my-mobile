@@ -208,4 +208,6 @@
     <string name="same_host_detect">Detect and ask</string>
     <string name="same_host_switched">Switching connection automatically…</string>
     <string name="same_host_migration_retained">Migration did not complete. The original page has been kept.</string>
+    <string name="pair_link_title">Connect to this DSH?</string>
+    <string name="pair_link_message">This link wants to connect to:\n%1$s\n\nOnly continue if you generated this link.</string>
 </resources>

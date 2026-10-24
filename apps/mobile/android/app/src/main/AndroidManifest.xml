@@ -58,7 +58,7 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="https" android:host="dsh-wind.duckdns.org" android:pathPrefix="/mobile-access/pair" />
+                <data android:scheme="https" android:host="${dshPairHost}" android:pathPrefix="/mobile-access/pair" />
             </intent-filter>
         </activity-alias>
         <activity-alias

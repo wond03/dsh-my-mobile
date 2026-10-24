@@ -209,4 +209,6 @@
     <string name="same_host_detect">Rileva e chiedi</string>
     <string name="same_host_switched">Cambio automatico della connessione in corso…</string>
     <string name="same_host_migration_retained">Migrazione non completata. La pagina originale è stata mantenuta.</string>
+    <string name="pair_link_title">Connettersi a questo DSH?</string>
+    <string name="pair_link_message">Questo link vuole connettersi a:\n%1$s\n\nContinua solo se hai generato tu il link.</string>
 </resources>
