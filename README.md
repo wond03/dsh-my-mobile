@@ -6,20 +6,22 @@
 - 管理面板（移动访问）可经公网域名访问，但所有管理接口都要求有效的 DSH 登录会话
 - 不写死任何个人域名或服务器地址；公网入口由你自己的反向代理/远程通道提供
 - Android App 使用独立包名 `com.dshmobile.community`，可与社区其他版本并存
+- 移动访问面板默认显示「下载最新 Android App」，直接指向本仓库对应版本的 APK，而不是上游 Release 或过期版本
 
 ## 安全说明
 - `/api/mobile-access/*` 的所有方法都要求有效的 DSH 登录会话；公网访问同样如此。
 - 公开分发请使用私有 keystore 签名的 release 构建，不要分发 debug 包。
 
 ## 版本
-0.6.16-community.1（基于上游 v0.6.16）
+0.6.16-community.2（基于上游 v0.6.16），Android App 1.0.2（versionCode 86）。
 
 ## 插件安装
-从 [Releases](https://github.com/wond03/dsh-my-mobile/releases) 下载 `dsh-my-mobile-0.6.16-community.1.tgz`，然后安装到你的 DSH profile：
+从 [Releases](https://github.com/wond03/dsh-my-mobile/releases/tag/community-v1.0.2-r2) 下载 `dsh-my-mobile-0.6.16-community.2.tgz`，然后安装到你的 DSH profile：
 ```bash
-dsh plugin --profile web add /path/to/dsh-my-mobile-0.6.16-community.1.tgz
+dsh plugin --profile web add /path/to/dsh-my-mobile-0.6.16-community.2.tgz
 ```
 重启 DSH 后，进入「移动访问」即可看到面板。管理接口需要 DSH 登录会话。
+同一个 Release 同时提供 App APK 和插件 tgz；面板顶部的「下载最新 Android App」会直接打开对应的 APK，而不是上游页面。
 
 公网自定义域名（可选）：
 ```bash
@@ -30,10 +32,10 @@ Environment=DSH_MOBILE_PUBLIC_HOST=your.domain.example
 
 ## Android App
 - 源码：`apps/mobile/android`
-- 最新安装包：[Releases](https://github.com/wond03/dsh-my-mobile/releases)
+- 最新安装包：[`dsh-community-1.0.2.apk`](https://github.com/wond03/dsh-my-mobile/releases/download/community-v1.0.2-r2/dsh-community-1.0.2.apk)
 - 当前版本：**1.0.2（versionCode 86，release 签名）**，包名 `com.dshmobile.community`
 - 签名证书 SHA-256：`18:A8:5F:8B:6B:1C:7E:32:BF:8D:02:0B:8F:F6:43:15:5B:4D:D3:CA:1D:E9:9C:D2:7C:F5:99:A3:61:81:B5:63`
-- 功能：切回前台自动重连；配对链接先确认再连接；新鲸鱼图标与自适应图标；深浅色配对/设备列表背景；移动端面板默认只显示常用项
+- 功能：切回前台自动重连；配对链接先确认再连接；新鲸鱼图标与自适应图标；深浅色配对/设备列表背景；移动端面板默认只显示常用项和 App 下载入口
 
 ## Android 构建
 ```bash
