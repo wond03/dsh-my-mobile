@@ -477,10 +477,22 @@ export async function issueServerCertificate(
 }
 
 /** Sign and atomically install a server leaf for the interface's current address. */
+/** Optional public DNS name for the managed gateway, supplied by the deployment. */
+function managedPublicHost(): string | undefined {
+  const value = process.env.DSH_MOBILE_PUBLIC_HOST?.trim()
+  if (value === undefined || value === '' || !/^[A-Za-z0-9.-]+$/u.test(value)) return undefined
+  return value
+}
+
 export async function refreshManagedServerCertificate(setup: ManagedSetup, address: string): Promise<void> {
+  const publicHost = managedPublicHost()
   await issueServerCertificate(
     { caCertFile: setup.tls.caCertFile, caKeyFile: setup.tls.caKeyFile },
-    { commonName: 'DeepSeek Harness Mobile', ipAddresses: [address] },
+    {
+      commonName: 'DeepSeek Harness Mobile',
+      ipAddresses: [address],
+      ...(publicHost === undefined ? {} : { dnsNames: [publicHost] }),
+    },
     { certFile: setup.tls.certFile, keyFile: setup.tls.keyFile },
   )
 }
@@ -493,8 +505,9 @@ export async function materializeManagedSetup(
   const network = selectLanNetwork(undefined, setup.networkInterface, table)
   await refreshManagedServerCertificate(setup, network.address)
   const ca = new X509Certificate(await readFile(setup.tls.caCertFile, 'utf8'))
+  const publicHost = managedPublicHost()
   return {
-    publicOrigin: `https://${network.address}:${String(setup.listenPort)}`,
+    publicOrigin: `https://${publicHost ?? network.address}:${String(setup.listenPort)}`,
     listenHost: network.address,
     allowedCidrs: parseAdditionalTrustedNetworks([network.cidr, ...(setup.extraAllowedCidrs ?? [])]),
     instanceId: ca.fingerprint256.replaceAll(':', '').toLowerCase(),
