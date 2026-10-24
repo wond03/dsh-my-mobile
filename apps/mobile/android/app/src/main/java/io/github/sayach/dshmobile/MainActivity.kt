@@ -1361,6 +1361,10 @@ class MainActivity : Activity() {
             action = { openAccessMode(AccessMode.REMOTE, restoreSaved = pairedDeviceStore.load().isEmpty()) },
             configure = { openAccessMode(AccessMode.REMOTE, restoreSaved = false) },
         ))
+        card.addView(spacer(18))
+        card.addView(secondaryButton(R.string.download_update, 48) {
+            openExternal(Uri.parse(APP_RELEASES_URL))
+        }, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
     }
 
     private fun accessChoice(

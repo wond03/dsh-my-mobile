@@ -1,8 +1,8 @@
 {
   "name": "dsh-my-mobile",
-  "version": "0.6.16-community.2",
+  "version": "0.6.16-community.3",
   "private": false,
-  "description": "DeepSeek Harness \u79fb\u52a8\u7aef\u9002\u914d\u4e0e\u5b89\u5168\u8bbf\u95ee\u63d2\u4ef6\uff0c\u652f\u6301\u5c40\u57df\u7f51\u3001\u8fdc\u7a0b\u8fde\u63a5\u3001Android App \u548c\u624b\u673a\u6d4f\u89c8\u5668\u3002",
+  "description": "DeepSeek Harness 移动端适配与安全访问插件，支持局域网、远程连接、Android App 和手机浏览器。",
   "type": "module",
   "workspaces": [
     "packages/question-fixes"
@@ -87,7 +87,7 @@
       ],
       "immediately": true
     },
-    "name": "\u6211\u7684DSH\u79fb\u52a8\u7aef"
+    "name": "我的DSH移动端"
   },
   "scripts": {
     "build": "tsdown && node ./scripts/check-client-bundle.mjs",

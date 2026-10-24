@@ -13,15 +13,15 @@
 - 公开分发请使用私有 keystore 签名的 release 构建，不要分发 debug 包。
 
 ## 版本
-0.6.16-community.2（基于上游 v0.6.16），Android App 1.0.2（versionCode 86）。
+0.6.16-community.3（基于上游 v0.6.16），Android App 1.0.3（versionCode 87）。
 
-- 插件包 SHA-256：`6c29e58cf78ad4b7afd102842c901f81804d26aea920833e19690c9fb5466b26`
-- App APK SHA-256：`09cb76e497485d508eadf6ae7e89280941be55e12e6cb597866fbeb73ae4fa7d`
+- 插件包 SHA-256：`d93d296f7f013ff157f0b6b9cdf6c989a1d046a5b4312d1a998324246c0af608`
+- App APK SHA-256：`1fd6d7ae978593fb57a9d27022276a7320cd018f10a4bb70091257dfaa938a53`
 
 ## 插件安装
-从 [Releases](https://github.com/wond03/dsh-my-mobile/releases/tag/community-v1.0.2-r2) 下载 `dsh-my-mobile-0.6.16-community.2.tgz`，然后安装到你的 DSH profile：
+从 [Releases](https://github.com/wond03/dsh-my-mobile/releases/tag/community-v1.0.3) 下载 `dsh-my-mobile-0.6.16-community.3.tgz`，然后安装到你的 DSH profile：
 ```bash
-dsh plugin --profile web add /path/to/dsh-my-mobile-0.6.16-community.2.tgz
+dsh plugin --profile web add /path/to/dsh-my-mobile-0.6.16-community.3.tgz
 ```
 重启 DSH 后，进入「移动访问」即可看到面板。管理接口需要 DSH 登录会话。
 同一个 Release 同时提供 App APK 和插件 tgz；面板顶部的「下载最新 Android App」会直接打开对应的 APK，而不是上游页面。
@@ -41,10 +41,10 @@ Environment=DSH_MOBILE_LISTEN_HOST=127.0.0.1
 
 ## Android App
 - 源码：`apps/mobile/android`
-- 最新安装包：[`dsh-community-1.0.2.apk`](https://github.com/wond03/dsh-my-mobile/releases/download/community-v1.0.2-r2/dsh-community-1.0.2.apk)
-- 当前版本：**1.0.2（versionCode 86，release 签名）**，包名 `com.dshmobile.community`
+- 最新安装包：[`dsh-community-1.0.3.apk`](https://github.com/wond03/dsh-my-mobile/releases/download/community-v1.0.3/dsh-community-1.0.3.apk)
+- 当前版本：**1.0.3（versionCode 87，release 签名）**，包名 `com.dshmobile.community`
 - 签名证书 SHA-256：`18:A8:5F:8B:6B:1C:7E:32:BF:8D:02:0B:8F:F6:43:15:5B:4D:D3:CA:1D:E9:9C:D2:7C:F5:99:A3:61:81:B5:63`
-- 功能：切回前台自动重连；配对链接先确认再连接；新鲸鱼图标与自适应图标；深浅色配对/设备列表背景；移动端面板默认只显示常用项和 App 下载入口
+- 功能：切回前台自动重连；配对链接先确认再连接；新鲸鱼图标与自适应图标；深浅色配对/设备列表背景；移动端面板默认只显示常用项和 App 下载入口；App 连接页新增「下载新版」入口
 
 ## Android 构建
 ```bash
