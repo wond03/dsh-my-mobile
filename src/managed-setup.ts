@@ -484,6 +484,12 @@ function managedPublicHost(): string | undefined {
   return value
 }
 
+/** Optional loopback bind for deployments whose reverse proxy owns the public port. */
+function managedListenHost(fallback: string): string {
+  const value = process.env.DSH_MOBILE_LISTEN_HOST?.trim()
+  return value === '127.0.0.1' || value === '::1' ? value : fallback
+}
+
 export async function refreshManagedServerCertificate(setup: ManagedSetup, address: string): Promise<void> {
   const publicHost = managedPublicHost()
   await issueServerCertificate(
@@ -508,7 +514,7 @@ export async function materializeManagedSetup(
   const publicHost = managedPublicHost()
   return {
     publicOrigin: `https://${publicHost ?? network.address}:${String(setup.listenPort)}`,
-    listenHost: network.address,
+    listenHost: managedListenHost(network.address),
     allowedCidrs: parseAdditionalTrustedNetworks([network.cidr, ...(setup.extraAllowedCidrs ?? [])]),
     instanceId: ca.fingerprint256.replaceAll(':', '').toLowerCase(),
     pairingCaFile: setup.tls.caCertFile,

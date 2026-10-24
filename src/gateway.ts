@@ -47,7 +47,6 @@ import { createMobileGraphEventTransform } from './mobile-graph-events.js'
 import {
   AUTH_PREFIX,
   assertExternalTrust,
-  assertLocalAdminTrust,
   cookie,
   CSRF_COOKIE,
   CSRF_HEADER,
@@ -3488,7 +3487,29 @@ export class MobileAccessGateway {
         try {
           const target = parseRequestTarget(request.url)
           const mutation = request.method === 'POST'
-          assertLocalAdminTrust(request, mutation, () => authenticateDesktop?.(request) === true)
+          // The gateway is reachable through the public DSH origin. Require the
+          // DSH session for every method and same-origin for mutations instead
+          // of the loopback-only desktop check.
+          if (authenticateDesktop?.(request) !== true) throw new HttpError(403, 'forbidden')
+          const site = request.headers['sec-fetch-site']
+          if (site !== undefined && site !== 'same-origin' && site !== 'none') throw new HttpError(403, 'forbidden')
+          if (mutation) {
+            const origin = request.headers.origin
+            if (origin === undefined) {
+              const desktop = request.headers['x-dsh-mobile-desktop-admin'] === 'dsh-app://app'
+              const web = request.headers['x-dsh-mobile-web-admin'] === 'same-origin-json'
+              if (!desktop && !web) throw new HttpError(403, 'forbidden')
+            } else {
+              let parsed: URL
+              try {
+                parsed = new URL(origin)
+              } catch {
+                throw new HttpError(403, 'forbidden')
+              }
+              const host = request.headers.host
+              if (host === undefined || parsed.host.toLowerCase() !== host.toLowerCase()) throw new HttpError(403, 'forbidden')
+            }
+          }
           if (target.search !== '') throw new HttpError(400, 'bad_request')
           if (request.method === 'GET' && target.decodedPathname === `${prefix}/status`) {
             sendJson(response, 200, {

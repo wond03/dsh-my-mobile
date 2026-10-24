@@ -37,7 +37,6 @@ import { listComputerImages, readComputerImage } from './computer-images.js'
 import {
   HttpError,
   LOCAL_ADMIN_PREFIX,
-  assertLocalAdminTrust,
   parseRequestTarget,
   readJsonObject,
   sendFailure,
@@ -915,6 +914,34 @@ export async function apply(ctx: Context, config: PluginConfig): Promise<void> {
       && connection.requestRejection(request) === undefined
   }
 
+  /**
+   * The admin API is served on the public DSH origin, so loopback-only trust
+   * would make the panel unusable from a phone or another computer. Require the
+   * authenticated DSH session for every method and exact same-origin for
+   * mutations; a non-simple plugin header is accepted only because a browser
+   * cannot add it cross-origin without a preflight.
+   */
+  const assertAdminRequestTrust = (request: IncomingMessage): void => {
+    const site = request.headers['sec-fetch-site']
+    if (site !== undefined && site !== 'same-origin' && site !== 'none') throw new HttpError(403, 'forbidden')
+    if (request.method !== 'POST') return
+    const origin = request.headers.origin
+    if (origin === undefined) {
+      const desktop = request.headers['x-dsh-mobile-desktop-admin'] === 'dsh-app://app'
+      const web = request.headers['x-dsh-mobile-web-admin'] === 'same-origin-json'
+      if (!desktop && !web) throw new HttpError(403, 'forbidden')
+      return
+    }
+    let parsed: URL
+    try {
+      parsed = new URL(origin)
+    } catch {
+      throw new HttpError(403, 'forbidden')
+    }
+    const host = request.headers.host
+    if (host === undefined || parsed.host.toLowerCase() !== host.toLowerCase()) throw new HttpError(403, 'forbidden')
+  }
+
   const adminRoute: WebRoute = {
     kind: 'prefix',
     path: LOCAL_ADMIN_PREFIX,
@@ -925,7 +952,7 @@ export async function apply(ctx: Context, config: PluginConfig): Promise<void> {
         // CSRF marker, not authentication.
         if (!authenticateDesktopAdmin(request)) throw new HttpError(403, 'forbidden')
         const target = parseRequestTarget(request.url)
-        assertLocalAdminTrust(request, request.method === 'POST', () => authenticateDesktopAdmin(request))
+        assertAdminRequestTrust(request)
         if (adminClosing) throw new HttpError(503, 'unavailable')
         if (target.search !== '') throw new HttpError(400, 'bad_request')
         const lanControl = target.decodedPathname === `${LOCAL_ADMIN_PREFIX}/control`

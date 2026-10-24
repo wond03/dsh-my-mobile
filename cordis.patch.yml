@@ -18,7 +18,7 @@
       disabled: !!js process.platform === 'win32' && (ctx.get('desktopRuntime')?.platform === 'win32' || ctx.get('desktopProfiles') !== undefined)
 
     - id: mobile-access
-      name: dsh-mobile
+      name: dsh-my-mobile
       inject: [webServer, connection]
       config:
         setupFile: !!js dshHomePath('mobile-access/setup.json')
